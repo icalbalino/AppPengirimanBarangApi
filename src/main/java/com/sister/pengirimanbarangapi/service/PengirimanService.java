@@ -33,4 +33,12 @@ public class PengirimanService {
         return repo.findByNamaPenerima(nama_penerima, alamat);
     }
     
+    public List<Pengiriman> findByNamaPenerima1(String nama_penerima, String alamat) throws Exception {
+        try {
+            return repo.findByNamaPenerima1(nama_penerima, alamat);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
 }
