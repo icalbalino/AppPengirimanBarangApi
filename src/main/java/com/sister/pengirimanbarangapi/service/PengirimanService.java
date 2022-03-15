@@ -29,4 +29,8 @@ public class PengirimanService {
         return repo.findAllById(id_registrasi);
     }
     
+    public List<Pengiriman> findByNamaPenerima(String nama_penerima, String alamat) {
+        return repo.findByNamaPenerima(nama_penerima, alamat);
+    }
+    
 }

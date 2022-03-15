@@ -15,5 +15,7 @@ import lombok.Data;
 public class SearchIdDTO {
     
     private Integer id_registrasi;
+    private String nama_penerima;
+    private String alamat;
     
 }

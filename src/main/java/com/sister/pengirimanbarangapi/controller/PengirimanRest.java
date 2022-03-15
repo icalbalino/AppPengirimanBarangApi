@@ -38,6 +38,11 @@ public class PengirimanRest {
         return service.findAllById(search.getId_registrasi());
     }
     
+    @PostMapping("/findbynamapenerima")
+    public List<Pengiriman> findByNamaPenerima(@RequestBody SearchIdDTO search) {
+        return service.findByNamaPenerima("%" + search.getNama_penerima() + "%", "%" + search.getAlamat() + "%");
+    }
+    
     @GetMapping("/gettime")
     public String getDateAndTime() {
         return new Date().toString();

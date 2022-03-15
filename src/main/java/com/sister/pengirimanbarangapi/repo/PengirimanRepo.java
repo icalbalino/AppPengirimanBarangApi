@@ -21,5 +21,11 @@ public interface PengirimanRepo extends JpaRepository<Pengiriman, Integer> {
     
     @Query("SELECT p FROM Pengiriman p WHERE p.id_registrasi = :id_registrasi")
     public List<Pengiriman> findAllById(@PathParam("id_registrasi") Integer id_registrasi);
+    
+    @Query("SELECT p FROM Pengiriman p WHERE p.nama_penerima LIKE :nama_penerima AND p.alamat LIKE :alamat")
+    public List<Pengiriman> findByNamaPenerima(
+            @PathParam("nama_penerima") String nama_penerima,
+            @PathParam("alamat") String alamat
+    );
 
 }
