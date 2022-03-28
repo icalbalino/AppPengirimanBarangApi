@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sister.pengirimanbarangapi.service;
 
 import com.sister.pengirimanbarangapi.entity.Pengiriman;
@@ -11,10 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author user
- */
+
 @Service
 public class PengirimanService {
     
@@ -28,7 +20,7 @@ public class PengirimanService {
     public List<Pengiriman> findAllById(Integer id_registrasi) {
         return repo.findAllById(id_registrasi);
     }
-    
+        
     public List<Pengiriman> findByNamaPenerima(String nama_penerima, String alamat) {
         return repo.findByNamaPenerima(nama_penerima, alamat);
     }
@@ -39,6 +31,14 @@ public class PengirimanService {
         } catch (Exception e) {
             throw e;
         }
+    }
+    
+    public Pengiriman save(Pengiriman pengiriman) {
+        return repo.save(pengiriman);
+    }
+    
+    public void deleteById(Integer id_registrasi) {
+        repo.deleteById(id_registrasi);
     }
     
 }

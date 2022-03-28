@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sister.pengirimanbarangapi.controller;
 
 import com.sister.pengirimanbarangapi.dto.GeneralResponse;
@@ -15,16 +10,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author user
- */
+
 @RestController
 @RequestMapping("/api/pengiriman")
 public class PengirimanRest {
@@ -37,17 +31,17 @@ public class PengirimanRest {
         return service.findAll();
     }
     
-    @PostMapping("/findallbyid")
+    @GetMapping("/findallbyid")
     public List<Pengiriman> findAllById(@RequestBody SearchIdDTO search) {
         return service.findAllById(search.getId_registrasi());
     }
     
-    @PostMapping("/findbynamapenerima")
+    @GetMapping("/findbynamapenerima")
     public List<Pengiriman> findByNamaPenerima(@RequestBody SearchIdDTO search) {
         return service.findByNamaPenerima("%" + search.getNama_penerima() + "%", "%" + search.getAlamat() + "%");
     }
     
-    @PostMapping("/findbynamapenerima1")
+    @GetMapping("/findbynamapenerima1")
     public ResponseEntity<GeneralResponse> findByNamaPenerima1(@RequestBody SearchIdDTO search) {
         GeneralResponse<List<Pengiriman>> response = new GeneralResponse<>();
         response.setMessages(new ArrayList<String>());
@@ -65,8 +59,76 @@ public class PengirimanRest {
             } catch (Exception e) {
                 response.setStatus(false);
                 response.setMessages(new ArrayList<String>());
+                response.getMessages().add(e.getMessage());                
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
+        }
+    }
+    
+    @PostMapping("/insertone")
+    public ResponseEntity<GeneralResponse> insertPengiriman(@RequestBody Pengiriman pengiriman) {  
+        GeneralResponse<Pengiriman> response = new GeneralResponse<>();
+        response.setMessages(new ArrayList<String>());
+        if(pengiriman.equals("")){
+            response.setStatus(false);
+            response.getMessages().add("data are required");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } else {
+            try {
+                response.setStatus(true);
+                response.getMessages().add("Data is added");
+                response.setData(service.save(pengiriman));
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } catch (Exception e) {
+                response.setStatus(false);
+                response.setMessages(new ArrayList<String>());
                 response.getMessages().add(e.getMessage());
-                
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
+        }
+    }
+    
+    @PutMapping("/updatebyid")
+    public ResponseEntity<GeneralResponse> updateById(@RequestBody Pengiriman pengiriman) {
+        GeneralResponse<Pengiriman> response = new GeneralResponse<>();
+        response.setMessages(new ArrayList<String>());
+        if(pengiriman.getId_registrasi().equals("")){
+            response.setStatus(false);
+            response.getMessages().add("id_registrasi are required");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } else {
+            try {
+                response.setStatus(true);
+                response.getMessages().add("Data is updated");
+                response.setData(service.save(pengiriman));
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } catch (Exception e) {
+                response.setStatus(false);
+                response.setMessages(new ArrayList<String>());
+                response.getMessages().add(e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
+        }
+    }
+    
+    @DeleteMapping("/deletebyid")
+    public ResponseEntity<GeneralResponse> deleteById(@RequestBody SearchIdDTO search) {
+        GeneralResponse<Pengiriman> response = new GeneralResponse<>();
+        response.setMessages(new ArrayList<String>());
+        if(search.getId_registrasi().equals("")){
+            response.setStatus(false);
+            response.getMessages().add("id_registrasi are required");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } else {
+            try {
+                response.setStatus(true);
+                response.getMessages().add("Data is deleted");
+                service.deleteById(search.getId_registrasi());
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } catch (Exception e) {
+                response.setStatus(false);
+                response.setMessages(new ArrayList<String>());
+                response.getMessages().add(e.getMessage());
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
             }
         }
